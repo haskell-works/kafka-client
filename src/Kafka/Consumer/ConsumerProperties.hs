@@ -41,7 +41,7 @@ import Kafka.Consumer.Callbacks as X
 
 -- | Whether the callback polling should be done synchronously or not.
 data CallbackPollMode =
-    -- | You have to poll the consumer frequently to handle new messages 
+    -- | You have to poll the consumer frequently to handle new messages
     -- as well as rebalance and keep alive events.
     -- This enables lowering the footprint and having full control over when polling
     -- happens, at the cost of manually managing those events.
@@ -170,5 +170,7 @@ queuedMaxMessagesKBytes kBytes =
 {-# INLINE queuedMaxMessagesKBytes #-}
 
 -- | Set the callback poll mode. Default value is 'CallbackPollModeAsync'.
+-- Since the Semigroup instance for 'ConsumerProperties' is right-biased, this option
+-- __has__ to be set last or it will be ignored.
 callbackPollMode :: CallbackPollMode -> ConsumerProperties
 callbackPollMode mode = mempty { cpCallbackPollMode = mode }
